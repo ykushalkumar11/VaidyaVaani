@@ -32,6 +32,22 @@ export const api = {
         500: errorSchemas.internal,
       },
     },
+    saveMedicineImage: {
+      method: 'POST' as const,
+      path: '/api/medicine-images' as const,
+      input: z.any(), // Using any for simplicity in fast mode
+      responses: {
+        201: z.any(),
+        500: errorSchemas.internal,
+      },
+    },
+    listMedicineImages: {
+      method: 'GET' as const,
+      path: '/api/medicine-images' as const,
+      responses: {
+        200: z.array(z.any()),
+      },
+    },
   },
 };
 

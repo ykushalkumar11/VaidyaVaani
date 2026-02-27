@@ -110,5 +110,25 @@ export async function registerRoutes(
     }
   });
 
+  app.post("/api/medicine-images", async (req, res) => {
+    try {
+      const saved = await storage.saveMedicineImage(req.body);
+      res.status(201).json(saved);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Failed to save medicine image" });
+    }
+  });
+
+  app.get("/api/medicine-images", async (req, res) => {
+    try {
+      const images = await storage.getMedicineImages();
+      res.json(images);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Failed to list medicine images" });
+    }
+  });
+
   return httpServer;
 }

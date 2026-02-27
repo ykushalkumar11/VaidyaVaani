@@ -1,6 +1,7 @@
-import { pgTable, text, serial, jsonb, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, jsonb, timestamp, integer } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+import { sql } from "drizzle-orm";
 
 export const prescriptions = pgTable("prescriptions", {
   id: serial("id").primaryKey(),
@@ -15,13 +16,29 @@ export const prescriptions = pgTable("prescriptions", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+export const medicineImages = pgTable("medicine_images", {
+  id: serial("id").primaryKey(),
+  prescriptionId: integer("prescription_id").references(() => prescriptions.id),
+  name: text("name").notNull(),
+  servings: text("servings").notNull(),
+  imageUrl: text("image_url").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const insertPrescriptionSchema = createInsertSchema(prescriptions).omit({ 
   id: true, 
   createdAt: true 
 });
 
+export const insertMedicineImageSchema = createInsertSchema(medicineImages).omit({
+  id: true,
+  createdAt: true
+});
+
 export type Prescription = typeof prescriptions.$inferSelect;
 export type InsertPrescription = z.infer<typeof insertPrescriptionSchema>;
+export type MedicineImage = typeof medicineImages.$inferSelect;
+export type InsertMedicineImage = z.infer<typeof insertMedicineImageSchema>;
 
 export const ParsePrescriptionRequest = z.object({
   image: z.string(), // base64 string including data URI prefix
@@ -51,3 +68,5 @@ export type ParsePrescriptionResponseType = z.infer<typeof ParsePrescriptionResp
 export const TtsRequest = z.object({
   text: z.string(),
 });
+
+export const SaveMedicineImageRequest = insertMedicineImageSchema;

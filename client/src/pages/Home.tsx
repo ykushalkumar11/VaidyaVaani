@@ -2,9 +2,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ParserTab } from "@/components/tabs/ParserTab";
 import { ExplanationTab } from "@/components/tabs/ExplanationTab";
 import { VoiceTab } from "@/components/tabs/VoiceTab";
-import { EvaluationTab } from "@/components/tabs/EvaluationTab";
+import { MedicineTrackerTab } from "@/components/tabs/MedicineTrackerTab";
 import { PrescriptionProvider } from "@/context/PrescriptionContext";
-import { Stethoscope, ClipboardList, Globe2, Volume2, BarChart3 } from "lucide-react";
+import { Stethoscope, ClipboardList, Globe2, Volume2, Pill } from "lucide-react";
 
 export default function Home() {
   return (
@@ -60,11 +60,11 @@ export default function Home() {
                 </TabsTrigger>
 
                 <TabsTrigger 
-                  value="evaluation" 
+                  value="tracker" 
                   className="data-[state=active]:bg-teal-50 data-[state=active]:text-teal-700 data-[state=active]:shadow-sm rounded-lg px-4 py-2.5 flex items-center gap-2 font-medium"
                 >
-                  <BarChart3 className="w-4 h-4" /> 
-                  <span className="hidden sm:inline">Evaluation</span>
+                  <Pill className="w-4 h-4" /> 
+                  <span className="hidden sm:inline">Medicine Tracker</span>
                 </TabsTrigger>
               </TabsList>
             </div>
@@ -82,8 +82,8 @@ export default function Home() {
                 <VoiceTab />
               </TabsContent>
 
-              <TabsContent value="evaluation" className="focus-visible:outline-none">
-                <EvaluationTab />
+              <TabsContent value="tracker" className="focus-visible:outline-none">
+                <MedicineTrackerTab />
               </TabsContent>
             </div>
             
@@ -93,3 +93,4 @@ export default function Home() {
     </PrescriptionProvider>
   );
 }
+
