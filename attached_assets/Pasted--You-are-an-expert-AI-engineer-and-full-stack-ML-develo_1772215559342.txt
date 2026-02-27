@@ -1,0 +1,173 @@
+--
+
+**You are an expert AI engineer and full-stack ML developer. Build a complete end-to-end working system called:**
+
+# 🏥 VaidyaVaani — Vernacular Medical Prescription Parser
+Create a production-grade Streamlit ai agent that interprets handwritten-style medical prescriptions and explains dosage instructions in Hindi and Telugu with voice output.
+
+## 🎯 Core Objectives
+Upload handwritten or scanned prescription images
+Extract text using OCR
+Identify medicines and dosage using medical NLP
+Simplify instructions into patient-friendly language
+Translate into Hindi and Telugu
+Generate voice output (TTS)
+Display accuracy evaluation metrics
+## 🧠 Architecture (must implement)
+
+### Pipeline:
+Image Upload
+ → Preprocessing (OpenCV)
+ → OCR (Tesseract)
+ → Medical NER (BioBERT / ClinicalBERT)
+ → LLM Parsing (structured JSON)
+ → Translation (IndicTrans2 / HuggingFace)
+ → Text-to-Speech (gTTS or Coqui TTS)
+ → Streamlit UI
+## 🧩 Open Source Models (must use)
+Use HuggingFace models :
+
+### OCR:
+
+* Tesseract OCR with OpenCV preprocessing
+
+### Medical NLP:
+
+* `d4data/biobert-base-cased-finetuned-ner`
+or
+
+* `emilyalsentzer/Bio_ClinicalBERT`
+
+### Translation:
+
+* `ai4bharat/indictrans2-en-indic`
+* `ai4bharat/indictrans2-indic-en`
+
+Languages: English → Hindi, Telugu
+
+### Text to Speech:
+
+* `gTTS` or `coqui-ai/TTS`
+## 🖥️ Streamlit UI Requirements
+Create a multi-tab interface:
+
+### Tab 1: 📋 Prescription Parser
+
+* Upload image
+* Show OCR extracted text
+* Show parsed table:
+
+  * Medicine Name
+  * Dosage
+  * Frequency
+  * Duration
+  * Instructions
+
+### Tab 2: 🌐 Multilingual Explanation
+
+* Language selector (English / Hindi / Telugu)
+* Simplified explanation per medicine
+* Emojis for timing:
+
+  * 🌅 Morning
+  * 🌙 Night
+  * 🍱 After Food
+  * ⚠️ Warnings
+
+### Tab 3: 🔊 Voice Output
+
+* Audio player
+* Speed selector (Normal / Slow / Very Slow)
+* Play translated instructions
+
+### Tab 4: 📊 Accuracy Evaluation
+Show metrics:
+
+* OCR Accuracy
+* NER Precision / Recall / F1
+* BLEU score for Hindi
+* BLEU score for Telugu
+Use sample test prescriptions for evaluation.
+
+## 🧪 Evaluation Report
+Implement evaluation code using:
+
+* `sklearn.metrics`
+* BLEU score from `nltk.translate.bleu_score`
+Display results as:
+
+* Table
+* Bar chart (matplotlib / plotly)
+## 🗂️ Project Structure (must generate)
+vaidya_vaani/
+│
+├── app.py (Streamlit main app)
+├── ocr.py
+├── ner.py
+├── translator.py
+├── tts.py
+├── evaluation.py
+├── requirements.txt
+├── sample_prescriptions/
+│   ├── fever.png
+│   ├── diabetes.png
+│   ├── bp.png
+│   ├── respiratory.png
+└── README.md
+## 📦 requirements.txt (include)
+streamlit
+pytesseract
+opencv-python
+transformers
+torch
+sentencepiece
+gtts
+TTS
+indic-nlp-library
+nltk
+scikit-learn
+matplotlib
+pillow
+## 🧠 LLM Parsing Logic
+Convert OCR text into structured JSON:
+
+json
+{
+  "medicine": "Paracetamol",
+  "dose": "500mg",
+  "frequency": "twice a day",
+  "duration": "5 days",
+  "instruction": "after food"
+}
+Use rule-based + LLM-style parsing.
+
+## 🔐 Safety
+Add disclaimer:
+
+> "This system is for educational purposes only and not a medical diagnosis tool."
+## 📘 README must include
+
+* Setup instructions
+* How to run Streamlit app
+* Model list
+* Screenshots placeholders
+* Evaluation methodology
+* Limitations
+* Future work
+## 🧑‍💻 Output Expectations
+
+Generate:
+Full Python code for all modules
+Streamlit UI code
+requirements.txt
+README.md
+Sample evaluation script
+Clear comments in code
+Modular and clean architecture
+## 🚀 Bonus (if possible)
+
+* Caching models with `@st.cache_resource`
+* Spinner animations during OCR/translation
+* Downloadable PDF report
+* Audio download button
+**Now generate the complete working implementation code for this project following the above specification.**
