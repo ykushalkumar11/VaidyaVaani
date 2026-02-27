@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Camera, Plus, Save, Pill } from "lucide-react";
+import { Camera, Plus, Save, Pill, Trash2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -48,12 +48,12 @@ export function MedicineTrackerTab() {
         servings,
         imageUrl: image,
       });
-      
+
       toast({
         title: "Saved",
         description: "Medicine details saved successfully.",
       });
-      
+
       setName("");
       setServings("");
       setImage(null);
@@ -87,18 +87,18 @@ export function MedicineTrackerTab() {
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="med-name">Medicine Name</Label>
-              <Input 
-                id="med-name" 
-                placeholder="e.g. Paracetamol 500mg" 
+              <Input
+                id="med-name"
+                placeholder="e.g. Paracetamol 500mg"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="servings">Servings / Instructions</Label>
-              <Input 
-                id="servings" 
-                placeholder="e.g. 1 tablet after food" 
+              <Input
+                id="servings"
+                placeholder="e.g. 1 tablet after food"
                 value={servings}
                 onChange={(e) => setServings(e.target.value)}
               />
@@ -106,10 +106,10 @@ export function MedicineTrackerTab() {
             <div className="space-y-2">
               <Label>Medicine Image</Label>
               <div className="flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-xl p-4 bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer relative overflow-hidden">
-                <input 
-                  type="file" 
-                  accept="image/*" 
-                  className="absolute inset-0 opacity-0 cursor-pointer" 
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="absolute inset-0 opacity-0 cursor-pointer"
                   onChange={handleImageUpload}
                 />
                 {image ? (
@@ -122,8 +122,8 @@ export function MedicineTrackerTab() {
                 )}
               </div>
             </div>
-            <Button 
-              className="w-full bg-teal-600 hover:bg-teal-700 text-white" 
+            <Button
+              className="w-full bg-teal-600 hover:bg-teal-700 text-white"
               onClick={handleSave}
               disabled={isSaving}
             >
@@ -155,12 +155,28 @@ export function MedicineTrackerTab() {
                   <div className="w-32 h-32 flex-shrink-0">
                     <img src={med.imageUrl} alt={med.name} className="w-full h-full object-cover" />
                   </div>
-                  <CardContent className="p-4 flex flex-col justify-center">
-                    <h4 className="font-bold text-slate-800">{med.name}</h4>
+                  <CardContent className="p-4 flex flex-col justify-center flex-1 relative">
+                    <h4 className="font-bold text-slate-800 pr-8">{med.name}</h4>
                     <p className="text-slate-600 text-sm">{med.servings}</p>
                     <p className="text-slate-400 text-[10px] mt-2 italic">
                       Saved on {new Date(med.createdAt).toLocaleDateString()}
                     </p>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute top-2 right-2 text-slate-400 hover:text-red-500 hover:bg-red-50"
+                      onClick={async () => {
+                        try {
+                          await apiRequest("DELETE", `/api/medicine-images/${med.id}`);
+                          queryClient.invalidateQueries({ queryKey: ["/api/medicine-images"] });
+                          toast({ title: "Deleted", description: "Medicine removed successfully." });
+                        } catch (e) {
+                          toast({ title: "Error", description: "Failed to delete medicine.", variant: "destructive" });
+                        }
+                      }}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
                   </CardContent>
                 </Card>
               ))}
